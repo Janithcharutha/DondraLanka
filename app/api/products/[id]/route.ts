@@ -60,7 +60,7 @@ export async function PUT(request: NextRequest, context: any) {
 
     const existingProduct = await db.collection("products").findOne({
       slug,
-      _id: { $ne: new ObjectId(id) },
+      _id: { $ne: new ObjectId(id) as any },
     });
 
     if (existingProduct) {

@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const existingCategory = await db.collection("categories").findOne({
       slug,
-      _id: { $ne: new ObjectId(id) },
+      _id: { $ne: new ObjectId(id) as any },
     })
 
     if (existingCategory) {

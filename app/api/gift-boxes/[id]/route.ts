@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const existingGiftBox = await db
       .collection("giftBoxes")
-      .findOne({ slug, _id: { $ne: new ObjectId(id) } })
+      .findOne({ slug, _id: { $ne: new ObjectId(id) as any } })
 
     if (existingGiftBox) {
       return NextResponse.json({ error: "Another gift box with this slug already exists" }, { status: 400 })
