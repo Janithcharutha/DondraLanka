@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 
     // Verify category and subcategory exist and get their names
     const categoryData = await db.collection("categories").findOne({ 
-      _id: new ObjectId(category) 
+      _id: new ObjectId(category) as any 
     })
     
     if (!categoryData) {
