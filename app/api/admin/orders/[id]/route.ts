@@ -128,8 +128,10 @@ export async function GET(req: Request, { params }: any) {
       return NextResponse.json({ error: "Invalid order ID" }, { status: 400 })
     }
 
-    const order = await db.collection("orders").findOne({ _id: orderId })
+    // const order = await db.collection("orders").findOne({ _id: orderId })
+    const order = await db.collection("orders").findOne({ _id: orderId as any })
 
+    
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
