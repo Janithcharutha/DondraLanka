@@ -58,7 +58,7 @@ export async function PUT(request: Request) {
     const result = await db
       .collection("settings")
       .findOneAndUpdate(
-        { _id: new ObjectId(_id) },
+        { _id: new ObjectId(_id) as any },
         { $set: { ...settings, updatedAt: new Date() } },
         { returnDocument: "after" },
       )

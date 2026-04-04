@@ -120,7 +120,7 @@ export async function POST(request: Request) {
 //     }))
 
 //     const updateResult = await db.collection("bundleKits").findOneAndUpdate(
-//       { _id: new ObjectId(_id) },
+//       { _id: new ObjectId(_id) as any },
 //       {
 //         $set: {
 //           name,
