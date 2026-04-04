@@ -188,7 +188,7 @@ export async function DELETE(req: Request, { params }: any) {
     const db = await connectToDatabase()
 
     const orderId = new ObjectId(params.id)
-    const result = await db.collection("orders").deleteOne({ _id: orderId })
+    const result = await db.collection("orders").deleteOne({ _id: orderId as any })
 
     if (result.deletedCount === 0) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
