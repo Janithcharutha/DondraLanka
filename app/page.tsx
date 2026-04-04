@@ -54,7 +54,7 @@ export default async function Home() {
       <CollectionsCarousel categories={categories} />
 
       {/* Featured Products */}
-      <section className="py-16 bg-beige">
+      <section className="py-16 bg-[#ABE0F0]"> 
         <div className="container mx-auto">
           <h2 className="font-playfair text-4xl text-center mb-12">Bestsellers</h2>
           <FeaturedProducts 

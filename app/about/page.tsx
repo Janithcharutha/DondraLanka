@@ -16,7 +16,7 @@ export default function AboutPage() {
       </div>
 
       {/* About Us Section */}
-      <section className="bg-[#f9f7f6] py-24">
+      <section className="bg-[#E9E9E9] py-24">
         <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h4 className="text-sm uppercase tracking-wider text-gray-600 mb-2">About Us</h4>
