@@ -1,0 +1,440 @@
+"use client"
+
+import React, { useState, useEffect } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { Search, ShoppingBag, ChevronDown, Menu, X } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { type FC } from "react"
+import { usePathname } from "next/navigation"
+import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs"
+import { useCart } from "@/components/providers/cart-provider"
+
+interface Subcategory {
+  _id: string
+  name: string
+  slug: string
+  description?: string
+}
+
+interface Category {
+  _id: string
+  name: string
+  slug: string
+  description?: string
+  image?: string
+  subcategories: Subcategory[]
+}
+
+const Header: FC = () => {
+  const { isSignedIn, user } = useUser()
+  const { items } = useCart()
+  const itemCount = items.reduce((total, item) => total + item.quantity, 0)
+  
+  const [isProductsOpen, setIsProductsOpen] = useState(false)
+  // const [isBranchesOpen, setIsBranchesOpen] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Check if current path is an admin route
+  const isAdminRoute = pathname?.startsWith('/admin')
+
+  // Don't render header in admin routes
+  if (isAdminRoute) return null
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setIsLoading(true)
+        const response = await fetch('/api/categories')
+        if (!response.ok) throw new Error('Failed to fetch categories')
+        const data = await response.json()
+        setCategories(data)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+        setError(error instanceof Error ? error.message : 'Failed to fetch categories')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCategories()
+  }, [])
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [pathname])
+
+  // Replace the login/register link with Clerk components
+  const authButtons = isSignedIn ? (
+    <li className="flex items-center gap-4">
+      <span className="text-sm">Hello, {user.firstName}</span>
+      <UserButton afterSignOutUrl="/" />
+    </li>
+  ) : (
+    <li className="flex items-center gap-2">
+      <SignInButton mode="modal">
+        <button className="bg-[#023E8A] text-white px-4 py-2 hover:bg-[#0353a4] transition-colors">
+          LOGIN
+        </button>
+      </SignInButton>
+      <SignUpButton mode="modal">
+        <button className="bg-[#023E8A] text-white px-4 py-2 hover:bg-[#0353a4] transition-colors">
+          REGISTER
+        </button>
+      </SignUpButton>
+    </li>
+  )
+
+  // Replace the mobile login/register link
+  const mobileAuthButton = isSignedIn ? (
+    <li className="flex items-center justify-between py-2">
+      <span className="text-sm">Hello, {user.firstName}</span>
+      <UserButton afterSignOutUrl="/" />
+    </li>
+  ) : (
+    <li>
+      <div className="flex gap-2 mt-4">
+        <SignInButton mode="modal">
+          <button className="bg-[#023E8A] text-white px-4 py-2 hover:bg-[#0353a4] transition-colors">
+            LOGIN
+          </button>
+        </SignInButton>
+        <SignUpButton mode="modal">
+          <button className="bg-[#023E8A] text-white px-4 py-2 hover:bg-[#0353a4] transition-colors">
+            REGISTER
+          </button>
+        </SignUpButton>
+      </div>
+    </li>
+  )
+
+  return (
+    <header className="sticky top-0 z-50 bg-[#023E8A] text-white">
+      {/* Top bar - hidden on mobile */}
+      <div className="hidden md:flex justify-center items-center py-1 border-b border-beige-dark">
+        <div className="absolute top-2 left-4 mt-10 md:left-8">
+          <div className="flex gap-2 md:gap-4">
+            <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]">
+              ISLANDWIDE DELIVERY
+            </Button>
+            <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]">
+              OFFERS
+            </Button>
+            {/* <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-black">
+              <Search className="h-4 w-4" />
+            </Button> */}
+          </div>
+        </div>
+
+        {/* <div className="absolute top-2 right-4 mt-10 md:right-8">
+          <Link href="/cart" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm font-medium relative">
+            {itemCount > 0 && (
+              <span className="absolute -top-3 -left-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {itemCount}
+              </span>
+            )}
+            <span className="hidden sm:inline">CART</span>
+            <span className="text-xs md:text-sm">
+              / RS.{items.reduce((total, item) => total + (item.price * item.quantity), 0).toLocaleString()}
+            </span>
+            <ShoppingBag className="h-4 w-4" />
+          </Link>
+        </div> */}
+        <div className="absolute top-2 right-4 mt-10 md:right-8">
+  <Link
+    href="/cart"
+    className="flex items-center gap-1 md:gap-2 text-xs md:text-sm font-medium relative 
+               rounded-full px-3 md:px-4 h-8
+               border border-white 
+               bg-[#023E8A] text-white 
+               hover:bg-[#0353a4] hover:text-black 
+               transition-colors"
+  >
+    {itemCount > 0 && (
+      <span className="absolute -top-3 -left-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+        {itemCount}
+      </span>
+    )}
+
+    <span className="hidden sm:inline">CART</span>
+    <span className="text-xs md:text-sm">
+      / RS.{items.reduce((total, item) => total + (item.price * item.quantity), 0).toLocaleString()}
+    </span>
+    <ShoppingBag className="h-4 w-4" />
+  </Link>
+</div>
+      </div>
+
+      {/* Mobile header */}
+      <div className="md:hidden flex justify-between items-center px-4 py-3 border-b border-beige-dark">
+        <button 
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2"
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+        
+        <Link href="/" className="flex-grow flex justify-center">
+          <Image
+            src="/logo.png"
+            alt="DONDRA LANKA"
+            width={120}
+            height={60}
+            className="h-auto scale-[1.2]"
+          />
+        </Link>
+<Link href="/cart" className="p-2 relative">
+  <div className="relative w-6 h-6">
+    <ShoppingBag size={20} />
+
+    {itemCount > 0 && (
+      <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center">
+        {itemCount}
+      </span>
+    )}
+  </div>
+</Link>
+      </div>
+
+      {/* Logo - hidden on mobile */}
+      <div className="hidden md:flex justify-center py-3">
+        <Link href="/">
+          <Image
+            src="/logo.png"
+            alt="DONDRA LANKA"
+            width={180}
+            height={80}
+            className="h-auto scale-[1.5]"
+          />
+        </Link>
+      </div>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white border-b border-beige-dark">
+          <nav className="px-4 py-2">
+            <ul className="space-y-4">
+              <li>
+                <Link href="/" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                  HOME
+                </Link>
+              </li>
+              <li>
+                <Link href="/shop" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                  SHOP
+                </Link>
+              </li>
+              {/* <li>
+                <button 
+                  onClick={() => setIsProductsOpen(!isProductsOpen)}
+                  className="flex items-center justify-between w-full py-2 hover:text-gray-600 transition-colors"
+                >
+                  PRODUCTS
+                  <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {isProductsOpen && (
+                  <div className="pl-4 mt-2 space-y-3">
+                    {categories.map((category: Category) => (
+                      <div key={category._id} className="mb-4">
+                        <h3 className="font-medium mb-2">
+                          <Link href={`/products/${category.slug}`} className="hover:text-gray-600">
+                            {category.name}
+                          </Link>
+                        </h3>
+                        <ul className="pl-4 space-y-2">
+                          {category.subcategories.map((subcategory: Subcategory) => (
+                            <li key={subcategory._id}>
+                              <Link
+                                href={`/products/${category.slug}/${subcategory.slug}`}
+                                className="block text-gray-600 hover:text-black"
+                              >
+                                {subcategory.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </li> */}
+              <li>
+  <button 
+    onClick={() => setIsProductsOpen(!isProductsOpen)}
+    className="flex items-center justify-between w-full px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors"
+  >
+    PRODUCTS
+    <ChevronDown 
+      className={`h-4 w-4 ml-1 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} 
+    />
+  </button>
+
+  {isProductsOpen && (
+    <div className="pl-4 mt-2 space-y-3 bg-[#023E8A]/10 rounded-md p-3">
+      {categories.map((category: Category) => (
+        <div key={category._id} className="mb-4">
+          
+          {/* Category Title */}
+          <h3 className="font-medium mb-2">
+            <Link 
+              href={`/products/${category.slug}`} 
+              className="text-[#023E8A] hover:text-black transition-colors"
+            >
+              {category.name}
+            </Link>
+          </h3>
+
+          {/* Subcategories */}
+          <ul className="pl-4 space-y-2">
+            {category.subcategories.map((subcategory: Subcategory) => (
+              <li key={subcategory._id}>
+                <Link
+                  href={`/products/${category.slug}/${subcategory.slug}`}
+                  className="block px-2 py-1 rounded text-gray-700 hover:bg-[#0353a4] hover:text-white transition-colors"
+                >
+                  {subcategory.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+        </div>
+      ))}
+    </div>
+  )}
+</li>
+              <li>
+                <Link href="/offers" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                  OFFERS
+                </Link>
+              </li>
+              <li>
+                <Link href="/bundle-kits" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                  BUNDLE KITS
+                </Link>
+              </li>
+              {/* <li>
+                <button 
+                  onClick={() => setIsBranchesOpen(!isBranchesOpen)}
+                  className="flex items-center justify-between w-full py-2 hover:text-gray-600 transition-colors"
+                >
+                  BRANCHES
+                  <ChevronDown className={`h-4 w-4 ml-1 transition-transform ${isBranchesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {isBranchesOpen && (
+                  <div className="pl-4 mt-2 space-y-2">
+                    <Link href="/branches/colombo" className="block hover:text-gray-600">
+                      Colombo
+                    </Link>
+                    <Link href="/branches/kandy" className="block hover:text-gray-600">
+                      Kandy
+                    </Link>
+                    <Link href="/branches/galle" className="block hover:text-gray-600">
+                      Galle
+                    </Link>
+                  </div>
+                )}
+              </li> */}
+              <li>
+                <Link href="/about" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                  ABOUT
+                </Link>
+              </li>
+              {mobileAuthButton}
+            </ul>
+          </nav>
+        </div>
+      )}
+
+      {/* Desktop navigation */}
+      <nav className="hidden md:block border-t border-b border-beige-dark relative z-40">
+        <ul className="flex justify-center items-center gap-4 lg:gap-6 py-1 text-sm">
+          <li>
+            <Link href="/" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+              HOME
+            </Link>
+          </li>
+          <li>
+            <Link href="/shop" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+              SHOP
+            </Link>
+          </li>
+          
+          <li
+            className="relative dropdown"
+            onMouseEnter={() => setIsProductsOpen(true)}
+            onMouseLeave={() => setIsProductsOpen(false)}
+          >
+            <Link href="/products" className="flex items-center px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors"
+         >
+              PRODUCTS <ChevronDown className="h-4 w-4 ml-1" />
+                      </Link>
+
+          {isProductsOpen && (
+            <div className="dropdown-menu bg-white shadow-lg p-6 min-w-[600px] z-50 grid grid-cols-3 gap-6 rounded-md border border-gray-200">
+              
+              {categories.map((category: Category) => (
+                <div key={category._id}>
+                  
+                  {/* Category Title */}
+                  <h3 className="font-medium mb-4">
+                    <Link 
+                      href={`/products/${category.slug}`} 
+                      className="text-[#023E8A] hover:text-black transition-colors"
+                    >
+                      {category.name}
+                    </Link>
+                  </h3>
+
+                  {/* Subcategories */}
+                  <ul className="space-y-3">
+                    {category.subcategories.map((subcategory: Subcategory) => (
+                      <li key={subcategory._id}>
+                        <Link
+                          href={`/products/${category.slug}/${subcategory.slug}`}
+                          className="block px-2 py-1 rounded text-gray-700 hover:bg-[#0353a4] hover:text-white transition-colors"
+                        >
+                          {subcategory.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+
+                </div>
+              ))}
+
+            </div>
+          )}
+          </li>
+          
+          <li>
+            <Link href="/offers" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+              OFFERS
+            </Link>
+          </li>
+          <li>
+            <Link href="/bundle-kits" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+              BUNDLE KITS
+            </Link>
+          </li>
+          <li>
+            <Link 
+              href="/about"
+              className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors"
+            >
+              ABOUT
+            </Link>
+          </li>
+          {authButtons}
+        </ul>
+      </nav>
+    </header>
+  )
+}
+
+export default Header

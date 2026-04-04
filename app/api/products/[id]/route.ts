@@ -1,0 +1,132 @@
+import { NextResponse, type NextRequest } from "next/server";
+import { connectToDatabase } from "@/lib/mongodb";
+import { ObjectId } from "mongodb";
+
+export async function GET(request: NextRequest, context: any) {
+  try {
+    const { id } = context.params;
+
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
+    }
+
+    const db = await connectToDatabase();
+    const product = await db.collection("products").findOne({ _id: new ObjectId(id) });
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      ...product,
+      _id: product._id.toString(),
+    });
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return NextResponse.json({ error: "Failed to fetch product" }, { status: 500 });
+  }
+}
+
+export async function PUT(request: NextRequest, context: any) {
+  try {
+    const { id } = context.params;
+    const body = await request.json();
+
+    const {
+      name,
+      slug,
+      description,
+      price,
+      discountedPrice,
+      images,
+      category,
+      categoryName,
+      subcategory,
+      subcategoryName,
+      stock,
+      featured,
+      status,
+    } = body;
+
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
+    }
+
+    if (!name || !slug || !price || !category || !subcategory) {
+      return NextResponse.json({ error: "Required fields are missing" }, { status: 400 });
+    }
+
+    const db = await connectToDatabase();
+
+    const existingProduct = await db.collection("products").findOne({
+      slug,
+      _id: { $ne: new ObjectId(id) },
+    });
+
+    if (existingProduct) {
+      return NextResponse.json({ error: "Another product with this slug already exists" }, { status: 400 });
+    }
+
+    const updatedProduct = {
+      name,
+      slug,
+      description: description || "",
+      price: Number(price),
+      discountedPrice: discountedPrice ? Number(discountedPrice) : null,
+      images: images || [],
+      category,
+      categoryName,
+      subcategory,
+      subcategoryName,
+      stock: Number(stock) || 0,
+      featured: featured || false,
+      status: status || "active",
+      updatedAt: new Date(),
+    };
+
+    const result = await db.collection("products").findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: updatedProduct },
+      { returnDocument: "after" }
+    );
+
+    if (!result || !result.value) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    const updated = result.value;
+
+    return NextResponse.json({
+      ...updated,
+      _id: updated._id.toString(),
+    });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    return NextResponse.json({ error: "Failed to update product" }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: NextRequest, context: any) {
+  try {
+    const { id } = context.params;
+
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
+    }
+
+    const db = await connectToDatabase();
+
+    const product = await db.collection("products").findOne({ _id: new ObjectId(id) });
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    await db.collection("products").deleteOne({ _id: new ObjectId(id) });
+
+    return NextResponse.json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    return NextResponse.json({ error: "Failed to delete product" }, { status: 500 });
+  }
+}
