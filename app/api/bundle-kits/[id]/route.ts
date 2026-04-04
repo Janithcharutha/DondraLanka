@@ -171,7 +171,8 @@ export async function PUT(request: NextRequest) {
 
     const db = await connectToDatabase()
     const existingBundle = await db.collection("bundleKits").findOne({
-      _id: new ObjectId(id),
+      // _id: new ObjectId(id)
+      _id: new ObjectId(id) as any,
     })
 
     if (!existingBundle) {
@@ -196,7 +197,10 @@ export async function PUT(request: NextRequest) {
       }) || []
 
     const result = await db.collection("bundleKits").findOneAndUpdate(
-      { _id: new ObjectId(id) },
+      { 
+        // _id: new ObjectId(id) 
+        _id: new ObjectId(id) as any
+      },
       {
         $set: {
           name: updateData.name,
