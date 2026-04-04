@@ -80,7 +80,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 })
     }
 
-    const product = await db.collection("products").findOne({ _id: new ObjectId(productId) })
+    const product = await db.collection("products").findOne({ _id: new ObjectId(productId) as any })
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
     const result = await db.collection("offers").insertOne(newOffer)
 
     // Update product with discounted price
-    await db.collection("products").updateOne({ _id: new ObjectId(productId) }, { $set: { discountedPrice } })
+    await db.collection("products").updateOne({ _id: new ObjectId(productId) as any }, { $set: { discountedPrice } })
 
     // Return the created offer with string ID
     return NextResponse.json({
