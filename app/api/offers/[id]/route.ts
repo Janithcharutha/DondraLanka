@@ -11,7 +11,7 @@ export async function GET(request: NextRequest, { params }: any) {
     }
 
     const db = await connectToDatabase()
-    const offer = await db.collection("offers").findOne({ _id: new ObjectId(id) })
+    const offer = await db.collection("offers").findOne({ _id: new ObjectId(id) as any })
 
     if (!offer) {
       return NextResponse.json({ error: "Offer not found" }, { status: 404 })
@@ -44,7 +44,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const db = await connectToDatabase()
 
-    const currentOffer = await db.collection("offers").findOne({ _id: new ObjectId(id) })
+    const currentOffer = await db.collection("offers").findOne({ _id: new ObjectId(id) as any })
 
     if (!currentOffer) {
       return NextResponse.json({ error: "Offer not found" }, { status: 404 })
@@ -69,7 +69,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const result = await db
       .collection("offers")
-      .findOneAndUpdate({ _id: new ObjectId(id) }, { $set: updatedOffer }, { returnDocument: "after" })
+      .findOneAndUpdate({ _id: new ObjectId(id) as any }, { $set: updatedOffer }, { returnDocument: "after" })
 
     if (!result) {
       return NextResponse.json({ error: "Offer not found" }, { status: 404 })
@@ -102,13 +102,13 @@ export async function DELETE(request: NextRequest, { params }: any) {
 
     const db = await connectToDatabase()
 
-    const offer = await db.collection("offers").findOne({ _id: new ObjectId(id) })
+    const offer = await db.collection("offers").findOne({ _id: new ObjectId(id) as any })
 
     if (!offer) {
       return NextResponse.json({ error: "Offer not found" }, { status: 404 })
     }
 
-    await db.collection("offers").deleteOne({ _id: new ObjectId(id) })
+    await db.collection("offers").deleteOne({ _id: new ObjectId(id) as any })
 
     await db.collection("products").updateOne({ _id: offer.productId }, { $set: { discountedPrice: null } })
 

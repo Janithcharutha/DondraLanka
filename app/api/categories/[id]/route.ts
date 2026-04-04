@@ -11,7 +11,7 @@ export async function GET(request: NextRequest, { params }: any) {
     }
 
     const db = await connectToDatabase()
-    const category = await db.collection("categories").findOne({ _id: new ObjectId(id) })
+    const category = await db.collection("categories").findOne({ _id: new ObjectId(id) as any })
 
     if (!category) {
       return NextResponse.json({ error: "Category not found" }, { status: 404 })
@@ -80,7 +80,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const result = await db
       .collection("categories")
-      .findOneAndUpdate({ _id: new ObjectId(id) }, { $set: updatedCategory }, { returnDocument: "after" })
+      .findOneAndUpdate({ _id: new ObjectId(id) as any }, { $set: updatedCategory }, { returnDocument: "after" })
 
     if (!result) {
       return NextResponse.json({ error: "Category not found" }, { status: 404 })
@@ -110,13 +110,13 @@ export async function DELETE(request: NextRequest, { params }: any) {
 
     const db = await connectToDatabase()
 
-    const category = await db.collection("categories").findOne({ _id: new ObjectId(id) })
+    const category = await db.collection("categories").findOne({ _id: new ObjectId(id) as any })
 
     if (!category) {
       return NextResponse.json({ error: "Category not found" }, { status: 404 })
     }
 
-    await db.collection("categories").deleteOne({ _id: new ObjectId(id) })
+    await db.collection("categories").deleteOne({ _id: new ObjectId(id) as any })
 
     return NextResponse.json({ message: "Category deleted successfully" })
   } catch (error) {

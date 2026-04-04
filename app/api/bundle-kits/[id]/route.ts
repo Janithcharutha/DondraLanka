@@ -41,7 +41,7 @@
 
 //     // Check if bundle exists first
 //     const existingBundle = await db.collection("bundleKits").findOne({
-//       _id: new ObjectId(id),
+//       _id: new ObjectId(id) as any,
 //     })
 
 //     if (!existingBundle) {
@@ -69,7 +69,7 @@
 //       }) || []
 
 //     const result = await db.collection("bundleKits").findOneAndUpdate(
-//       { _id: new ObjectId(id) },
+//       { _id: new ObjectId(id) as any },
 //       {
 //         $set: {
 //           name: updateData.name,
@@ -126,7 +126,7 @@
 //       return NextResponse.json({ error: "Invalid bundle kit ID" }, { status: 400 })
 //     }
 
-//     const result = await db.collection("bundleKits").deleteOne({ _id: new ObjectId(id) })
+//     const result = await db.collection("bundleKits").deleteOne({ _id: new ObjectId(id) as any })
 
 //     if (result.deletedCount === 0) {
 //       return NextResponse.json({ error: "Bundle kit not found" }, { status: 404 })
@@ -171,8 +171,8 @@ export async function PUT(request: NextRequest) {
 
     const db = await connectToDatabase()
     const existingBundle = await db.collection("bundleKits").findOne({
-      // _id: new ObjectId(id)
-      _id: new ObjectId(id) as any,
+      // _id: new ObjectId(id) as any
+      _id: new ObjectId(id) as any as any,
     })
 
     if (!existingBundle) {
@@ -198,8 +198,8 @@ export async function PUT(request: NextRequest) {
 
     const result = await db.collection("bundleKits").findOneAndUpdate(
       { 
-        // _id: new ObjectId(id) 
-        _id: new ObjectId(id) as any
+        // _id: new ObjectId(id) as any 
+        _id: new ObjectId(id) as any as any
       },
       {
         $set: {
@@ -253,7 +253,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     const db = await connectToDatabase()
-    const result = await db.collection("bundleKits").deleteOne({ _id: new ObjectId(id) })
+    const result = await db.collection("bundleKits").deleteOne({ _id: new ObjectId(id) as any })
 
     if (result.deletedCount === 0) {
       return NextResponse.json({ error: "Bundle kit not found" }, { status: 404 })

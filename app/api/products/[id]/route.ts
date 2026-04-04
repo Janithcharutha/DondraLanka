@@ -11,7 +11,7 @@ export async function GET(request: NextRequest, context: any) {
     }
 
     const db = await connectToDatabase();
-    const product = await db.collection("products").findOne({ _id: new ObjectId(id) });
+    const product = await db.collection("products").findOne({ _id: new ObjectId(id) as any });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
@@ -85,7 +85,7 @@ export async function PUT(request: NextRequest, context: any) {
     };
 
     const result = await db.collection("products").findOneAndUpdate(
-      { _id: new ObjectId(id) },
+      { _id: new ObjectId(id) as any },
       { $set: updatedProduct },
       { returnDocument: "after" }
     );
@@ -116,13 +116,13 @@ export async function DELETE(request: NextRequest, context: any) {
 
     const db = await connectToDatabase();
 
-    const product = await db.collection("products").findOne({ _id: new ObjectId(id) });
+    const product = await db.collection("products").findOne({ _id: new ObjectId(id) as any });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    await db.collection("products").deleteOne({ _id: new ObjectId(id) });
+    await db.collection("products").deleteOne({ _id: new ObjectId(id) as any });
 
     return NextResponse.json({ message: "Product deleted successfully" });
   } catch (error) {

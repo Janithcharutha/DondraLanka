@@ -37,7 +37,7 @@ export async function GET(
     
     const banner = await db
       .collection("newsBanners")
-      .findOne({ _id: new ObjectId(id) })
+      .findOne({ _id: new ObjectId(id) as any })
 
     if (!banner) {
       return NextResponse.json(
@@ -77,7 +77,7 @@ export async function PUT(
     const result = await db
       .collection("newsBanners")
       .findOneAndUpdate(
-        { _id: new ObjectId(id) },
+        { _id: new ObjectId(id) as any },
         {
           $set: {
             ...body,

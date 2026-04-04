@@ -11,7 +11,7 @@ export async function GET(request: NextRequest, { params }: any) {
     }
 
     const db = await connectToDatabase()
-    const giftBox = await db.collection("giftBoxes").findOne({ _id: new ObjectId(id) })
+    const giftBox = await db.collection("giftBoxes").findOne({ _id: new ObjectId(id) as any })
 
     if (!giftBox) {
       return NextResponse.json({ error: "Gift box not found" }, { status: 404 })
@@ -76,7 +76,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const result = await db
       .collection("giftBoxes")
-      .findOneAndUpdate({ _id: new ObjectId(id) }, { $set: updatedGiftBox }, { returnDocument: "after" })
+      .findOneAndUpdate({ _id: new ObjectId(id) as any }, { $set: updatedGiftBox }, { returnDocument: "after" })
 
     if (!result) {
       return NextResponse.json({ error: "Gift box not found" }, { status: 404 })
@@ -106,13 +106,13 @@ export async function DELETE(request: NextRequest, { params }: any) {
 
     const db = await connectToDatabase()
 
-    const giftBox = await db.collection("giftBoxes").findOne({ _id: new ObjectId(id) })
+    const giftBox = await db.collection("giftBoxes").findOne({ _id: new ObjectId(id) as any })
 
     if (!giftBox) {
       return NextResponse.json({ error: "Gift box not found" }, { status: 404 })
     }
 
-    await db.collection("giftBoxes").deleteOne({ _id: new ObjectId(id) })
+    await db.collection("giftBoxes").deleteOne({ _id: new ObjectId(id) as any })
 
     return NextResponse.json({ message: "Gift box deleted successfully" })
   } catch (error) {
