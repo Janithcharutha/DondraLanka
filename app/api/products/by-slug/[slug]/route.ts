@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     // Get category and subcategory data
     const category = await db.collection("categories")
-      .findOne<Category>({ _id: new ObjectId(product.category) })
+      .findOne<Category>({ _id: new ObjectId(product.category) as any })
 
     const subcategory = category?.subcategories
       ?.find((sub: Subcategory) => sub._id.toString() === product.subcategory)
