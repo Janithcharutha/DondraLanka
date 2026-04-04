@@ -131,7 +131,7 @@ export async function GET(req: Request, { params }: any) {
     // const order = await db.collection("orders").findOne({ _id: orderId })
     const order = await db.collection("orders").findOne({ _id: orderId as any })
 
-    
+
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
@@ -165,7 +165,8 @@ export async function PATCH(req: Request, { params }: any) {
     if (paymentProof) updateData.paymentProof = paymentProof
 
     const order = await db.collection("orders").findOneAndUpdate(
-      { _id: new ObjectId(params.id) },
+      // { _id: new ObjectId(params.id) }
+      { _id: new ObjectId(params.id) as any },
       { $set: updateData },
       { returnDocument: "after" }
     )
