@@ -1,14 +1,14 @@
-import { ObjectId } from 'mongodb'
+import mongoose from 'mongoose'
 
 export interface BundleProduct {
-  productId: string | ObjectId
+  productId: string | mongoose.Types.ObjectId
   productName: string
   quantity: number
   price: number
 }
 
 export interface BundleKit {
-  _id?: string | ObjectId
+  _id?: string | mongoose.Types.ObjectId
   name: string
   slug: string
   description?: string

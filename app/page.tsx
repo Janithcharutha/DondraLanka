@@ -68,19 +68,16 @@ export default async function Home() {
 <section className="py-16 container mx-auto">
   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
     {/* Video Section */}
-    <div>
-<video
-  autoPlay
-  muted
-  loop
-  playsInline
-  className="rounded-lg w-full h-auto"
->
-  <source src="/hero-video.mp4" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-    </div>
+<div>
+  <Image
+    src="/b1.webp"
+    alt="Hero"
+    width={1200}
+    height={600}
+    className="rounded-lg w-full h-auto"
+    priority
+  />
+</div>
 
     {/* Text Content */}
     <div className="max-w-lg">

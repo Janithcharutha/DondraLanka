@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
 import mongoose from 'mongoose'
 import { NewsBanner } from "@/models/NewsBanner"
 
@@ -9,10 +8,10 @@ async function getValidObjectId(context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params
   
   try {
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return null
     }
-    return new ObjectId(id)
+    return new mongoose.Types.ObjectId(id)
   } catch {
     return null
   }
@@ -26,7 +25,7 @@ export async function GET(
   try {
     const { id } = await context.params
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { error: "Invalid banner ID" },
         { status: 400 }
@@ -37,7 +36,7 @@ export async function GET(
     
     const banner = await db
       .collection("newsBanners")
-      .findOne({ _id: new ObjectId(id) as any })
+      .findOne({ _id: new mongoose.Types.ObjectId(id) as any })
 
     if (!banner) {
       return NextResponse.json(
@@ -64,7 +63,7 @@ export async function PUT(
   try {
     const { id } = await context.params
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { error: "Invalid banner ID" },
         { status: 400 }
@@ -77,7 +76,7 @@ export async function PUT(
     const result = await db
       .collection("newsBanners")
       .findOneAndUpdate(
-        { _id: new ObjectId(id) as any },
+        { _id: new mongoose.Types.ObjectId(id) as any },
         {
           $set: {
             ...body,

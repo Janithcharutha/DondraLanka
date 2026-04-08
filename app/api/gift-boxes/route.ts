@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 
 export async function GET() {
   try {
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     // Convert product IDs to ObjectId
     const processedProducts = products.map((product: any) => ({
       ...product,
-      productId: typeof product.productId === "string" ? new ObjectId(product.productId) : product.productId,
+      productId: typeof product.productId === "string" ? new mongoose.Types.ObjectId(product.productId) : product.productId,
     }))
 
     // Create new gift box

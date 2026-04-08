@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 
 export type CartItemType = 'product' | 'bundle' | 'offer'
 
@@ -24,7 +24,7 @@ export interface CartItem {
 }
 
 export interface BundleKit {
-  _id: ObjectId
+  _id: mongoose.Types.ObjectId
   name: string
   slug: string
   description: string
@@ -32,7 +32,7 @@ export interface BundleKit {
   discountedPrice?: number
   images: string[]
   products: {
-    productId: ObjectId
+    productId: mongoose.Types.ObjectId
     productName: string
     quantity: number
     price: number
@@ -42,11 +42,11 @@ export interface BundleKit {
 }
 
 export interface CartDocument {
-  _id: ObjectId
+  _id: mongoose.Types.ObjectId
   userId: string
   items: {
     type: CartItemType
-    itemId: ObjectId
+    itemId: mongoose.Types.ObjectId
     name: string
     slug: string
     image: string
@@ -54,7 +54,7 @@ export interface CartDocument {
     originalPrice?: number
     quantity: number
     products?: {
-      productId: ObjectId
+      productId: mongoose.Types.ObjectId
       productName: string
       quantity: number
       price: number

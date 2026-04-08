@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 
 export async function GET() {
   try {
@@ -49,7 +49,7 @@ export async function PUT(request: Request) {
     const body = await request.json()
     const { _id, ...settings } = body
 
-    if (!_id || !ObjectId.isValid(_id)) {
+    if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
       return NextResponse.json({ error: "Invalid settings ID" }, { status: 400 })
     }
 
@@ -58,7 +58,7 @@ export async function PUT(request: Request) {
     const result = await db
       .collection("settings")
       .findOneAndUpdate(
-        { _id: new ObjectId(_id) as any },
+        { _id: new mongoose.Types.ObjectId(_id) as any },
         { $set: { ...settings, updatedAt: new Date() } },
         { returnDocument: "after" },
       )

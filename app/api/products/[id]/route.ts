@@ -1,17 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
-import { ObjectId } from "mongodb";
+import mongoose from 'mongoose';
 
-export async function GET(request: NextRequest, context: any) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
     }
 
     const db = await connectToDatabase();
-    const product = await db.collection("products").findOne({ _id: new ObjectId(id) as any });
+    const product = await db.collection("products").findOne({ _id: new mongoose.Types.ObjectId(id) as any });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
@@ -27,9 +27,10 @@ export async function GET(request: NextRequest, context: any) {
   }
 }
 
-export async function PUT(request: NextRequest, context: any) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
+
     const body = await request.json();
 
     const {
@@ -48,7 +49,7 @@ export async function PUT(request: NextRequest, context: any) {
       status,
     } = body;
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
     }
 
@@ -60,7 +61,7 @@ export async function PUT(request: NextRequest, context: any) {
 
     const existingProduct = await db.collection("products").findOne({
       slug,
-      _id: { $ne: new ObjectId(id) as any },
+      _id: { $ne: new mongoose.Types.ObjectId(id) },
     });
 
     if (existingProduct) {
@@ -85,7 +86,7 @@ export async function PUT(request: NextRequest, context: any) {
     };
 
     const result = await db.collection("products").findOneAndUpdate(
-      { _id: new ObjectId(id) as any },
+      { _id: new mongoose.Types.ObjectId(id) as any },
       { $set: updatedProduct },
       { returnDocument: "after" }
     );
@@ -106,23 +107,23 @@ export async function PUT(request: NextRequest, context: any) {
   }
 }
 
-export async function DELETE(request: NextRequest, context: any) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 });
     }
 
     const db = await connectToDatabase();
 
-    const product = await db.collection("products").findOne({ _id: new ObjectId(id) as any });
+    const product = await db.collection("products").findOne({ _id: new mongoose.Types.ObjectId(id) as any });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    await db.collection("products").deleteOne({ _id: new ObjectId(id) as any });
+    await db.collection("products").deleteOne({ _id: new mongoose.Types.ObjectId(id) as any });
 
     return NextResponse.json({ message: "Product deleted successfully" });
   } catch (error) {

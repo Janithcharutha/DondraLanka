@@ -1,17 +1,17 @@
 import { cache } from 'react'
 import { connectToDatabase } from "@/lib/mongodb"
 import type { Category } from "@/lib/types"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 
 interface CategoryDocument {
-  _id: ObjectId
+  _id: mongoose.Types.ObjectId
   name: string
   slug: string
   description?: string
   image?: string
   order?: number
   subcategories?: {
-    _id: ObjectId
+    _id: mongoose.Types.ObjectId
     name: string
     slug: string
     description?: string

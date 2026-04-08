@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
-import { ObjectId } from 'mongodb'
+import mongoose from 'mongoose'
 import type { Category, Subcategory } from '@/lib/types'
 
 function formatSubcategory(sub: any): Subcategory {
   return {
-    _id: sub._id ? sub._id.toString() : new ObjectId().toString(),
+    _id: sub._id ? sub._id.toString() : new mongoose.Types.ObjectId().toString(),
     name: sub.name,
     slug: sub.slug,
     description: sub.description || ''
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
       updatedAt: now,
       subcategories: body.subcategories.map((sub: any) => ({
         ...sub,
-        _id: new ObjectId()
+        _id: new mongoose.Types.ObjectId()
       }))
     }
     

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 import type { BundleKit, BundleProduct } from "@/types/bundle-kit"
 
 export async function GET() {
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       try {
         return {
           ...product,
-          productId: new ObjectId(product.productId as string),
+          productId: new mongoose.Types.ObjectId(product.productId as string),
           quantity: Number(product.quantity),
           price: Number(product.price)
         }

@@ -1,12 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 
-export async function GET(request: NextRequest, { params }: any) {
+export async function GET(request: NextRequest, context: { params: Promise<{ productId: string }> }) {
   try {
-    const { productId } = params
+    const { productId } = await context.params
 
-    if (!ObjectId.isValid(productId)) {
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 })
     }
 
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest, { params }: any) {
       .aggregate([
         {
           $match: {
-            productId: new ObjectId(productId),
+            productId: new mongoose.Types.ObjectId(productId),
             status: "active",
             startDate: { $lte: today },
             endDate: { $gte: today },

@@ -1,24 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/mongodb'
-import { ObjectId } from 'mongodb'
+import mongoose from 'mongoose'
 
 interface Subcategory {
-  _id: ObjectId
+  _id: mongoose.Types.ObjectId
   name: string
   slug: string
 }
 
 interface Category {
-  _id: ObjectId
+  _id: mongoose.Types.ObjectId
   name: string
   slug: string
   subcategories: Subcategory[]
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest, context: { params: Promise<{ slug: string }> }) {
   try {
-    // Use `request` to access params
-    const slug = request.url.split("/").pop()
+    // Use params to access slug
+    const { slug } = await context.params
 
     if (!slug) {
       return NextResponse.json(
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     // Get category and subcategory data
     const category = await db.collection("categories")
-      .findOne<Category>({ _id: new ObjectId(product.category) as any })
+      .findOne<Category>({ _id: new mongoose.Types.ObjectId(product.category) as any })
 
     const subcategory = category?.subcategories
       ?.find((sub: Subcategory) => sub._id.toString() === product.subcategory)

@@ -42,7 +42,7 @@ async function createAdminUser() {
 
     // Create password hash
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('admin123', salt);
+    const hashedPassword = await bcrypt.hash('123456', salt);
 
     // Create admin user
     const admin = await User.create({

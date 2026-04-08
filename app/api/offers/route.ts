@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 
 export async function GET() {
   try {
@@ -76,18 +76,18 @@ export async function POST(request: Request) {
     const db = await connectToDatabase()
 
     // Check if product exists
-    if (!ObjectId.isValid(productId)) {
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
       return NextResponse.json({ error: "Invalid product ID" }, { status: 400 })
     }
 
-    const product = await db.collection("products").findOne({ _id: new ObjectId(productId) as any })
+    const product = await db.collection("products").findOne({ _id: new mongoose.Types.ObjectId(productId) as any })
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
 
     // Check if offer for this product already exists
-    const existingOffer = await db.collection("offers").findOne({ productId: new ObjectId(productId) })
+    const existingOffer = await db.collection("offers").findOne({ productId: new mongoose.Types.ObjectId(productId) })
 
     if (existingOffer) {
       return NextResponse.json({ error: "Offer for this product already exists" }, { status: 400 })
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
 
     // Create new offer
     const newOffer = {
-      productId: new ObjectId(productId),
+      productId: new mongoose.Types.ObjectId(productId),
       productName: product.name,
       productSlug: product.slug,
       productImage: product.images?.[0] || null,
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
     const result = await db.collection("offers").insertOne(newOffer)
 
     // Update product with discounted price
-    await db.collection("products").updateOne({ _id: new ObjectId(productId) as any }, { $set: { discountedPrice } })
+    await db.collection("products").updateOne({ _id: new mongoose.Types.ObjectId(productId) as any }, { $set: { discountedPrice } })
 
     // Return the created offer with string ID
     return NextResponse.json({

@@ -1,17 +1,17 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 
-export async function GET(request: NextRequest, { params }: any) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params
+    const { id } = await context.params
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid gift box ID" }, { status: 400 })
     }
 
     const db = await connectToDatabase()
-    const giftBox = await db.collection("giftBoxes").findOne({ _id: new ObjectId(id) as any })
+    const giftBox = await db.collection("giftBoxes").findOne({ _id: new mongoose.Types.ObjectId(id) as any })
 
     if (!giftBox) {
       return NextResponse.json({ error: "Gift box not found" }, { status: 404 })
@@ -31,13 +31,13 @@ export async function GET(request: NextRequest, { params }: any) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: any) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params
+    const { id } = await context.params
     const body = await request.json()
     const { name, slug, description, price, discountedPrice, images, products, featured, status, isCustomizable } = body
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid gift box ID" }, { status: 400 })
     }
 
@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const existingGiftBox = await db
       .collection("giftBoxes")
-      .findOne({ slug, _id: { $ne: new ObjectId(id) as any } })
+      .findOne({ slug, _id: { $ne: new mongoose.Types.ObjectId(id) } })
 
     if (existingGiftBox) {
       return NextResponse.json({ error: "Another gift box with this slug already exists" }, { status: 400 })
@@ -57,7 +57,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const processedProducts = products.map((product: any) => ({
       ...product,
-      productId: typeof product.productId === "string" ? new ObjectId(product.productId) : product.productId,
+      productId: typeof product.productId === "string" ? new mongoose.Types.ObjectId(product.productId) : product.productId,
     }))
 
     const updatedGiftBox = {
@@ -76,7 +76,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const result = await db
       .collection("giftBoxes")
-      .findOneAndUpdate({ _id: new ObjectId(id) as any }, { $set: updatedGiftBox }, { returnDocument: "after" })
+      .findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) as any }, { $set: updatedGiftBox }, { returnDocument: "after" })
 
     if (!result) {
       return NextResponse.json({ error: "Gift box not found" }, { status: 404 })
@@ -96,23 +96,23 @@ export async function PUT(request: NextRequest, { params }: any) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: any) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params
+    const { id } = await context.params
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid gift box ID" }, { status: 400 })
     }
 
     const db = await connectToDatabase()
 
-    const giftBox = await db.collection("giftBoxes").findOne({ _id: new ObjectId(id) as any })
+    const giftBox = await db.collection("giftBoxes").findOne({ _id: new mongoose.Types.ObjectId(id) as any })
 
     if (!giftBox) {
       return NextResponse.json({ error: "Gift box not found" }, { status: 404 })
     }
 
-    await db.collection("giftBoxes").deleteOne({ _id: new ObjectId(id) as any })
+    await db.collection("giftBoxes").deleteOne({ _id: new mongoose.Types.ObjectId(id) as any })
 
     return NextResponse.json({ message: "Gift box deleted successfully" })
   } catch (error) {

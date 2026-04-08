@@ -15,7 +15,7 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([])
-  const [priceRange, setPriceRange] = useState([0, 15000])
+  const [priceRange, setPriceRange] = useState([0,100000])
 
   useEffect(() => {
     const fetchAllData = async () => {

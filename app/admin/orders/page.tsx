@@ -213,7 +213,7 @@ export default function OrdersPage() {
                 <tr className="border-b bg-gray-50">
                   <th className="text-left p-4 font-medium">Order ID</th>
                   <th className="text-left p-4 font-medium">Customer</th>
-                  <th className="text-left p-4 font-medium">Date</th>
+                  {/* <th className="text-left p-4 font-medium">Date</th> */}
                   <th className="text-left p-4 font-medium">Status</th>
                   <th className="text-left p-4 font-medium">Payment</th>
                   <th className="text-left p-4 font-medium">Total</th>
@@ -234,9 +234,9 @@ export default function OrdersPage() {
                         <p className="text-xs text-gray-500">{order.billingDetails.email}</p>
                       </div>
                     </td>
-                    <td className="p-4">
+                    {/* <td className="p-4">
                       {new Date(order.createdAt).toLocaleDateString()}
-                    </td>
+                    </td> */}
                     <td className="p-4">
                       <Badge
                         variant="outline"

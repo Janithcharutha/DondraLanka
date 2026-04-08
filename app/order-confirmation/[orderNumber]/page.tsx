@@ -1,3 +1,5 @@
+// 
+
 import { redirect } from "next/navigation"
 import { connectToDatabase } from "@/lib/mongodb"
 import { Card, CardContent } from "@/components/ui/card"
@@ -43,8 +45,12 @@ const OrderSchema = z.object({
 
 const SHIPPING_COST = 350
 
-export default async function OrderConfirmationPage({ params }: any) {
-  const orderNumber = params.orderNumber
+export default async function OrderConfirmationPage({
+  params,
+}: {
+  params: Promise<{ orderNumber: string }>
+}) {
+  const { orderNumber } = await params
 
   const db = await connectToDatabase()
   const orderData = await db.collection("orders").findOne({ orderNumber })

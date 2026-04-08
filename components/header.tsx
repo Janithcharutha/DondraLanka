@@ -7,7 +7,7 @@ import { Search, ShoppingBag, ChevronDown, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { type FC } from "react"
 import { usePathname } from "next/navigation"
-import { UserButton, SignInButton, SignUpButton, useUser } from "@clerk/nextjs"
+import { UserButton, useUser } from "@clerk/nextjs"
 import { useCart } from "@/components/providers/cart-provider"
 
 interface Subcategory {
@@ -69,49 +69,19 @@ const Header: FC = () => {
     setMobileMenuOpen(false)
   }, [pathname])
 
-  // Replace the login/register link with Clerk components
   const authButtons = isSignedIn ? (
     <li className="flex items-center gap-4">
       <span className="text-sm">Hello, {user.firstName}</span>
       <UserButton afterSignOutUrl="/" />
     </li>
-  ) : (
-    <li className="flex items-center gap-2">
-      <SignInButton mode="modal">
-        <button className="bg-[#023E8A] text-white px-4 py-2 hover:bg-[#0353a4] transition-colors">
-          LOGIN
-        </button>
-      </SignInButton>
-      <SignUpButton mode="modal">
-        <button className="bg-[#023E8A] text-white px-4 py-2 hover:bg-[#0353a4] transition-colors">
-          REGISTER
-        </button>
-      </SignUpButton>
-    </li>
-  )
+  ) : null
 
-  // Replace the mobile login/register link
   const mobileAuthButton = isSignedIn ? (
     <li className="flex items-center justify-between py-2">
       <span className="text-sm">Hello, {user.firstName}</span>
       <UserButton afterSignOutUrl="/" />
     </li>
-  ) : (
-    <li>
-      <div className="flex gap-2 mt-4">
-        <SignInButton mode="modal">
-          <button className="bg-[#023E8A] text-white px-4 py-2 hover:bg-[#0353a4] transition-colors">
-            LOGIN
-          </button>
-        </SignInButton>
-        <SignUpButton mode="modal">
-          <button className="bg-[#023E8A] text-white px-4 py-2 hover:bg-[#0353a4] transition-colors">
-            REGISTER
-          </button>
-        </SignUpButton>
-      </div>
-    </li>
-  )
+  ) : null
 
   return (
     <header className="sticky top-0 z-50 bg-[#023E8A] text-white">
@@ -122,9 +92,17 @@ const Header: FC = () => {
             <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]">
               ISLANDWIDE DELIVERY
             </Button>
-            <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]">
+            {/* <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]">
               OFFERS
-            </Button>
+            </Button> */}
+            <Link href="/offers">
+              <Button
+                variant="outline"
+                className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]"
+              >
+                OFFERS
+              </Button>
+            </Link>
             {/* <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-black">
               <Search className="h-4 w-4" />
             </Button> */}

@@ -1,17 +1,17 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { connectToDatabase } from "@/lib/mongodb"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 
-export async function GET(request: NextRequest, { params }: any) {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params
+    const { id } = await context.params
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid offer ID" }, { status: 400 })
     }
 
     const db = await connectToDatabase()
-    const offer = await db.collection("offers").findOne({ _id: new ObjectId(id) as any })
+    const offer = await db.collection("offers").findOne({ _id: new mongoose.Types.ObjectId(id) as any })
 
     if (!offer) {
       return NextResponse.json({ error: "Offer not found" }, { status: 404 })
@@ -28,13 +28,13 @@ export async function GET(request: NextRequest, { params }: any) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: any) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params
+    const { id } = await context.params
     const body = await request.json()
     const { discountPercentage, startDate, endDate, status } = body
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid offer ID" }, { status: 400 })
     }
 
@@ -44,7 +44,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const db = await connectToDatabase()
 
-    const currentOffer = await db.collection("offers").findOne({ _id: new ObjectId(id) as any })
+    const currentOffer = await db.collection("offers").findOne({ _id: new mongoose.Types.ObjectId(id) as any })
 
     if (!currentOffer) {
       return NextResponse.json({ error: "Offer not found" }, { status: 404 })
@@ -69,7 +69,7 @@ export async function PUT(request: NextRequest, { params }: any) {
 
     const result = await db
       .collection("offers")
-      .findOneAndUpdate({ _id: new ObjectId(id) as any }, { $set: updatedOffer }, { returnDocument: "after" })
+      .findOneAndUpdate({ _id: new mongoose.Types.ObjectId(id) as any }, { $set: updatedOffer }, { returnDocument: "after" })
 
     if (!result) {
       return NextResponse.json({ error: "Offer not found" }, { status: 404 })
@@ -92,23 +92,23 @@ export async function PUT(request: NextRequest, { params }: any) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: any) {
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const { id } = params
+    const { id } = await context.params
 
-    if (!ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid offer ID" }, { status: 400 })
     }
 
     const db = await connectToDatabase()
 
-    const offer = await db.collection("offers").findOne({ _id: new ObjectId(id) as any })
+    const offer = await db.collection("offers").findOne({ _id: new mongoose.Types.ObjectId(id) as any })
 
     if (!offer) {
       return NextResponse.json({ error: "Offer not found" }, { status: 404 })
     }
 
-    await db.collection("offers").deleteOne({ _id: new ObjectId(id) as any })
+    await db.collection("offers").deleteOne({ _id: new mongoose.Types.ObjectId(id) as any })
 
     await db.collection("products").updateOne({ _id: offer.productId }, { $set: { discountedPrice: null } })
 

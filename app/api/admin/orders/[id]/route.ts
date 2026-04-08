@@ -109,24 +109,25 @@
 // }
 
 import { NextResponse } from "next/server"
-import { ObjectId } from "mongodb"
+import mongoose from 'mongoose'
 import { connectToDatabase } from "@/lib/mongodb"
 
 // GET Order
-export async function GET(req: Request, { params }: any) {
-  if (!params?.id) {
+export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+
+  if (!id) {
     return NextResponse.json({ error: "Missing order ID" }, { status: 400 })
   }
 
   try {
     const db = await connectToDatabase()
     
-    let orderId: ObjectId
-    try {
-      orderId = new ObjectId(params.id)
-    } catch (error) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid order ID" }, { status: 400 })
     }
+
+    const orderId = new mongoose.Types.ObjectId(id);
 
     // const order = await db.collection("orders").findOne({ _id: orderId })
     const order = await db.collection("orders").findOne({ _id: orderId as any })
@@ -152,7 +153,9 @@ export async function GET(req: Request, { params }: any) {
 }
 
 // PATCH Order
-export async function PATCH(req: Request, { params }: any) {
+export async function PATCH(req: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+
   try {
     const body = await req.json()
     const { status, paymentProof } = body
@@ -166,7 +169,7 @@ export async function PATCH(req: Request, { params }: any) {
 
     const order = await db.collection("orders").findOneAndUpdate(
       // { _id: new ObjectId(params.id) }
-      { _id: new ObjectId(params.id) as any },
+      { _id: new mongoose.Types.ObjectId(id) as any },
       { $set: updateData },
       { returnDocument: "after" }
     )
@@ -183,11 +186,13 @@ export async function PATCH(req: Request, { params }: any) {
 }
 
 // DELETE Order
-export async function DELETE(req: Request, { params }: any) {
+export async function DELETE(req: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+
   try {
     const db = await connectToDatabase()
 
-    const orderId = new ObjectId(params.id)
+    const orderId = new mongoose.Types.ObjectId(id)
     const result = await db.collection("orders").deleteOne({ _id: orderId as any })
 
     if (result.deletedCount === 0) {

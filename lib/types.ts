@@ -1,7 +1,7 @@
-import { ObjectId } from 'mongodb'
+import mongoose from 'mongoose'
 
 export interface Subcategory {
-  _id: string | ObjectId
+  _id: string | mongoose.Types.ObjectId
   name: string
   title?: string // Added title as optional
   slug: string
@@ -9,7 +9,7 @@ export interface Subcategory {
 }
 
 export interface Category {
-  _id: string | ObjectId
+  _id: string | mongoose.Types.ObjectId
   name: string
   title?: string // Added title as optional
   slug: string
