@@ -39,8 +39,8 @@ export default async function Page({ params }: ProductProps) {
     notFound()
   }
 
-  // Only validate category since subcategories were removed
-  if (product.category !== resolvedParams.category) {
+  if (product.category !== resolvedParams.category || 
+      product.subcategory !== resolvedParams.subcategory) {
     notFound()
   }
 

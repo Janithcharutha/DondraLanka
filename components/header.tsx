@@ -84,21 +84,21 @@ const Header: FC = () => {
   ) : null
 
   return (
-    <header className="sticky top-0 z-50 bg-[#023E8A] text-white">
+    <header className="sticky top-0 z-50 bg-[#5900ba] text-white">
       {/* Top bar - hidden on mobile */}
       <div className="hidden md:flex justify-center items-center py-1 border-b border-beige-dark">
         <div className="absolute top-2 left-4 mt-10 md:left-8">
           <div className="flex gap-2 md:gap-4">
-            <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]">
+            <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#5900ba] hover:text-black hover:bg-[#9b38f2]">
               ISLANDWIDE DELIVERY
             </Button>
-            {/* <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]">
+            {/* <Button variant="outline" className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#5900ba] hover:text-black hover:bg-[#9b38f2]">
               OFFERS
             </Button> */}
             <Link href="/offers">
               <Button
                 variant="outline"
-                className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#023E8A] hover:text-black hover:bg-[#0353a4]"
+                className="rounded-full text-xs h-8 px-3 md:px-4 border-white bg-[#5900ba] hover:text-black hover:bg-[#9b38f2]"
               >
                 OFFERS
               </Button>
@@ -129,8 +129,8 @@ const Header: FC = () => {
     className="flex items-center gap-1 md:gap-2 text-xs md:text-sm font-medium relative 
                rounded-full px-3 md:px-4 h-8
                border border-white 
-               bg-[#023E8A] text-white 
-               hover:bg-[#0353a4] hover:text-black 
+               bg-[#5900ba] text-white 
+               hover:bg-[#9b38f2] hover:text-black 
                transition-colors"
   >
     {itemCount > 0 && (
@@ -198,12 +198,12 @@ const Header: FC = () => {
           <nav className="px-4 py-2">
             <ul className="space-y-4">
               <li>
-                <Link href="/" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                <Link href="/" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
                   HOME
                 </Link>
               </li>
               <li>
-                <Link href="/shop" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                <Link href="/shop" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
                   SHOP
                 </Link>
               </li>
@@ -244,7 +244,7 @@ const Header: FC = () => {
               <li>
   <button 
     onClick={() => setIsProductsOpen(!isProductsOpen)}
-    className="flex items-center justify-between w-full px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors"
+    className="flex items-center justify-between w-full px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors"
   >
     PRODUCTS
     <ChevronDown 
@@ -253,7 +253,7 @@ const Header: FC = () => {
   </button>
 
   {isProductsOpen && (
-    <div className="pl-4 mt-2 space-y-3 bg-[#023E8A]/10 rounded-md p-3">
+    <div className="pl-4 mt-2 space-y-3 bg-[#5900ba]/10 rounded-md p-3">
       {categories.map((category: Category) => (
         <div key={category._id} className="mb-4">
           
@@ -261,7 +261,7 @@ const Header: FC = () => {
           <h3 className="font-medium mb-2">
             <Link 
               href={`/products/${category.slug}`} 
-              className="text-[#023E8A] hover:text-black transition-colors"
+              className="text-[#5900ba] hover:text-black transition-colors"
             >
               {category.name}
             </Link>
@@ -273,7 +273,7 @@ const Header: FC = () => {
               <li key={subcategory._id}>
                 <Link
                   href={`/products/${category.slug}/${subcategory.slug}`}
-                  className="block px-2 py-1 rounded text-gray-700 hover:bg-[#0353a4] hover:text-white transition-colors"
+                  className="block px-2 py-1 rounded text-gray-700 hover:bg-[#9b38f2] hover:text-white transition-colors"
                 >
                   {subcategory.name}
                 </Link>
@@ -287,12 +287,12 @@ const Header: FC = () => {
   )}
 </li>
               <li>
-                <Link href="/offers" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                <Link href="/offers" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
                   OFFERS
                 </Link>
               </li>
               <li>
-                <Link href="/bundle-kits" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                <Link href="/bundle-kits" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
                   BUNDLE KITS
                 </Link>
               </li>
@@ -319,7 +319,7 @@ const Header: FC = () => {
                 )}
               </li> */}
               <li>
-                <Link href="/about" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+                <Link href="/about" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
                   ABOUT
                 </Link>
               </li>
@@ -333,12 +333,12 @@ const Header: FC = () => {
       <nav className="hidden md:block border-t border-b border-beige-dark relative z-40">
         <ul className="flex justify-center items-center gap-4 lg:gap-6 py-1 text-sm">
           <li>
-            <Link href="/" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+            <Link href="/" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
               HOME
             </Link>
           </li>
           <li>
-            <Link href="/shop" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+            <Link href="/shop" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
               SHOP
             </Link>
           </li>
@@ -348,7 +348,7 @@ const Header: FC = () => {
             onMouseEnter={() => setIsProductsOpen(true)}
             onMouseLeave={() => setIsProductsOpen(false)}
           >
-            <Link href="/products" className="flex items-center px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors"
+            <Link href="/products" className="flex items-center px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors"
          >
               PRODUCTS <ChevronDown className="h-4 w-4 ml-1" />
                       </Link>
@@ -363,7 +363,7 @@ const Header: FC = () => {
                   <h3 className="font-medium mb-4">
                     <Link 
                       href={`/products/${category.slug}`} 
-                      className="text-[#023E8A] hover:text-black transition-colors"
+                      className="text-[#5900ba] hover:text-black transition-colors"
                     >
                       {category.name}
                     </Link>
@@ -375,7 +375,7 @@ const Header: FC = () => {
                       <li key={subcategory._id}>
                         <Link
                           href={`/products/${category.slug}/${subcategory.slug}`}
-                          className="block px-2 py-1 rounded text-gray-700 hover:bg-[#0353a4] hover:text-white transition-colors"
+                          className="block px-2 py-1 rounded text-gray-700 hover:bg-[#9b38f2] hover:text-white transition-colors"
                         >
                           {subcategory.name}
                         </Link>
@@ -391,19 +391,19 @@ const Header: FC = () => {
           </li>
           
           <li>
-            <Link href="/offers" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+            <Link href="/offers" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
               OFFERS
             </Link>
           </li>
           <li>
-            <Link href="/bundle-kits" className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors">
+            <Link href="/bundle-kits" className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors">
               BUNDLE KITS
             </Link>
           </li>
           <li>
             <Link 
               href="/about"
-              className="px-3 py-2 text-white bg-[#023E8A] hover:bg-[#0353a4] hover:text-black transition-colors"
+              className="px-3 py-2 text-white bg-[#5900ba] hover:bg-[#9b38f2] hover:text-black transition-colors"
             >
               ABOUT
             </Link>
