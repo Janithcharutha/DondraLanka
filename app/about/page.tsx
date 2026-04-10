@@ -1,5 +1,19 @@
 import Image from "next/image"
 
+import type { Metadata } from "next/types";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "About Us",
+  description:
+    "Learn about DONDRA LANKA and our commitment to premium dried fish and seafood from Sri Lanka.",
+  path: "/about",
+  keywords: [
+    "about DONDRA LANKA",
+    "Sri Lankan dried seafood",
+    "premium dried fish supplier",
+  ],
+});
 export default function AboutPage() {
   return (
     <div>
@@ -41,7 +55,7 @@ Our dedication to sustainability, hygiene, and quality combined with convenient 
           <div className="relative aspect-square rounded-lg overflow-hidden">
             <Image
               src="/about1.png"
-              alt="Herbal Ingredients on a Brass Plate"
+              alt="Premium dried seafood products prepared by DONDRA LANKA"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
