@@ -45,7 +45,7 @@ export default function CheckoutPage() {
     accountName: "DONDRA LANKA",
     accountNumber: "100390217204",
     branch: "Devinuwara",
-    swiftCode: "BCEYLKLX"
+    swiftCode: "NSBALKLX"
   }
   
   const [billingDetails, setBillingDetails] = useState<BillingDetails>({
