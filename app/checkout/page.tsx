@@ -41,10 +41,10 @@ export default function CheckoutPage() {
   const [orderReference, setOrderReference] = useState<string | null>(null)
 
   const bankDetails = {
-    bankName: "Bank of Ceylon",
+    bankName: "National Savings Bank",
     accountName: "DONDRA LANKA",
-    accountNumber: "1234567890",
-    branch: "Colombo",
+    accountNumber: "100390217204",
+    branch: "Devinuwara",
     swiftCode: "BCEYLKLX"
   }
   
