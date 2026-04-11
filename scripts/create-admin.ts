@@ -34,7 +34,7 @@ async function createAdminUser() {
     console.log('Connected to MongoDB');
 
     // Check if admin exists
-    const existingAdmin = await User.findOne({ email: 'nawodkalpa63@gmail.com@gmail.com' });
+    const existingAdmin = await User.findOne({ email: 'dlankanetwork@gmail.com' });
     if (existingAdmin) {
       console.log('Admin user already exists');
       process.exit(0);
@@ -42,12 +42,12 @@ async function createAdminUser() {
 
     // Create password hash
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('123456', salt);
+    const hashedPassword = await bcrypt.hash('4321384Cl', salt);
 
     // Create admin user
     const admin = await User.create({
       name: 'Admin',
-      email: 'nawodkalpa63@gmail.com',
+      email: 'dlankanetwork@gmail.com',
       password: hashedPassword,
       role: 'admin'
     });
