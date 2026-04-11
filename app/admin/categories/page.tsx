@@ -443,7 +443,7 @@ const CategoriesPage: FC = () => {
                     id="name"
                     value={newCategory.name}
                     onChange={handleNameChange}
-                    placeholder="e.g. FACE CARE"
+                    placeholder="e.g. DRY FISH"
                   />
                 </div>
                 <div className="grid gap-2">
@@ -452,7 +452,7 @@ const CategoriesPage: FC = () => {
                     id="slug"
                     value={newCategory.slug}
                     onChange={(e) => setNewCategory({ ...newCategory, slug: e.target.value })}
-                    placeholder="e.g. face-care"
+                    placeholder="e.g. dry-fish"
                   />
                   <p className="text-sm text-gray-500">Used in URLs: /products/[slug]</p>
                 </div>
@@ -524,7 +524,7 @@ const CategoriesPage: FC = () => {
                         slug: generateSlug(e.target.value),
                       })
                     }}
-                    placeholder="e.g. FACE CREAM"
+                    placeholder="e.g. SPRATS"
                   />
                 </div>
                 <div className="grid gap-2">
@@ -533,11 +533,11 @@ const CategoriesPage: FC = () => {
                     id="subslug"
                     value={newSubcategory.slug}
                     onChange={(e) => setNewSubcategory({ ...newSubcategory, slug: e.target.value })}
-                    placeholder="e.g. face-cream"
+                    placeholder="e.g. sprats"
                   />
                   <p className="text-sm text-gray-500">Used in URLs: /products/[category]/[slug]</p>
                 </div>
-                <div className="grid gap-2">
+                {/* <div className="grid gap-2">
                   <Label htmlFor="subdescription">Description</Label>
                   <Textarea
                     id="subdescription"
@@ -545,7 +545,7 @@ const CategoriesPage: FC = () => {
                     onChange={(e) => setNewSubcategory({ ...newSubcategory, description: e.target.value })}
                     placeholder="e.g. Facial creams and moisturizers"
                   />
-                </div>
+                </div> */}
               </div>
               <DialogFooter>
                 <Button onClick={handleAddSubcategory} disabled={isAddingSubcategory}>

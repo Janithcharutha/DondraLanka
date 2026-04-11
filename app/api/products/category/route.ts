@@ -28,11 +28,12 @@ export async function GET(request: Request) {
       _id: product._id.toString()
     }))
 
-    return NextResponse.json(formattedProducts, {
-      headers: {
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
-      }
-    })
+    // return NextResponse.json(formattedProducts, {
+    //   headers: {
+    //     'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
+    //   }
+    // })
+    return NextResponse.json(formattedProducts)
   } catch (error) {
     console.error("Error fetching category products:", error)
     return NextResponse.json(

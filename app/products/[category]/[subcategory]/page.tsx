@@ -147,7 +147,8 @@ async function getCategoryData(slug: string): Promise<Category | null> {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/categories?slug=${slug}`,
       {
-        next: { revalidate: 3600 },
+        // next: { revalidate: 3600 },
+        cache: "no-store",
       }
     );
     if (!res.ok) return null;

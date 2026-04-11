@@ -136,7 +136,8 @@ async function getCategoryProducts(categoryId: string): Promise<Product[]> {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/products/category?category=${categoryId}`,
       {
-        next: { revalidate: 3600 },
+        // next: { revalidate: 3600 },
+        cache: "no-store",
       }
     );
 

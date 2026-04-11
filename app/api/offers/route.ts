@@ -36,7 +36,8 @@ export async function GET() {
             product: {
               name: "$product.name",
               price: "$product.price",
-              images: "$product.images"
+              images: "$product.images",
+              description: "$product.description"
             }
           }
         },

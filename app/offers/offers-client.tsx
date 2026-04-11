@@ -99,6 +99,9 @@ export default function OffersClient({ initialOffers }: { initialOffers: any[] }
       <h1 className="font-playfair text-4xl mb-8 text-center">
         Special Offers
       </h1>
+      <p className="text-center mb-8">
+        Explore special offers on DONDRA LANKA Premium Products.
+      </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {offerProducts.map((product) => (

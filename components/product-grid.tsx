@@ -159,15 +159,17 @@ export default function ProductGrid({
         <OfferCard key={offer._id} offer={offer} />
       ))}
 
+            {/* Bundle Kits - only render if provided */}
+      {bundleKits.map((bundle) => (
+        <BundleKitCard key={bundle._id} bundle={bundle} />
+      ))}
+
       {/* Regular products */}
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}
 
-      {/* Bundle Kits - only render if provided */}
-      {bundleKits.map((bundle) => (
-        <BundleKitCard key={bundle._id} bundle={bundle} />
-      ))}
+
     </div>
   )
 }

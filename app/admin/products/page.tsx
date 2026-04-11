@@ -493,24 +493,8 @@ export default function ProductsPage() {
                   />
                 </div>
 
-                <div className="grid gap-2">
-                  <Label htmlFor="keyBenefits">Key Benefits</Label>
-                  <Textarea
-                    id="keyBenefits"
-                    value={newProduct.keyBenefits.map(benefit => `- ${benefit}`).join('\n')}
-                    onChange={(e) => {
-                      const text = e.target.value;
-                      const benefits = text
-                        .split('\n')
-                        .map(line => line.replace(/^-\s*/, '').trim())
-                        .filter(Boolean);
-                      setNewProduct({ ...newProduct, keyBenefits: benefits });
-                    }}
-                    placeholder={`Enter key benefits...\nExample:\n- Lightens the skin\n- moisturize and leaves your skin feeling extremely soft\n- very smooth and light texture`}
-                    rows={6}
-                    className="font-mono"
-                  />
-                </div>
+
+
               </div>
             </div>
             <DialogFooter>
@@ -697,24 +681,9 @@ export default function ProductsPage() {
                   />
                 </div>
 
-                <div className="grid gap-2">
-                  <Label htmlFor="edit-keyBenefits">Key Benefits</Label>
-                  <Textarea
-                    id="edit-keyBenefits"
-                    value={editProduct?.keyBenefits.map(benefit => `- ${benefit}`).join('\n')}
-                    onChange={(e) => {
-                      const text = e.target.value;
-                      const benefits = text
-                        .split('\n')
-                        .map(line => line.replace(/^-\s*/, '').trim())
-                        .filter(Boolean);
-                      setEditProduct(prev => prev ? { ...prev, keyBenefits: benefits } : null);
-                    }}
-                    placeholder={`Enter key benefits...\nExample:\n- Lightens the skin\n- moisturize and leaves your skin feeling extremely soft`}
-                    rows={6}
-                    className="font-mono"
-                  />
-                </div>
+
+
+
               </div>
             </div>
           )}

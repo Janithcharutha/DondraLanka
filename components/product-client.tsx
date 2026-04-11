@@ -89,10 +89,10 @@ export function ProductClient({ product, params }: ProductClientProps) {
   const reviews = [
     {
       id: 1,
-      name: "Sarah J.",
+      name: "T.M. Perera.",
       rating: 5,
-      date: "15 March 2023",
-      comment: "I've been using this cream for a month and my skin looks so much better!",
+      date: "15 March 2026",
+      comment: "I’ve been buying this dried fish regularly, and the quality is always very good. Fresh taste, well dried, and clean. Highly satisfied.",
     }
   ]
 
