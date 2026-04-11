@@ -273,7 +273,7 @@ export function ProductClient({ product, params }: ProductClientProps) {
                   )}
 
                   {/* Key Benefits */}
-                  {product.keyBenefits && product.keyBenefits.length > 0 && (
+                  {/* {product.keyBenefits && product.keyBenefits.length > 0 && (
                     <div>
                       <h3 className="font-medium mb-2">Key Benefits</h3>
                       <ul className="list-[–] pl-5 space-y-1">
@@ -282,7 +282,7 @@ export function ProductClient({ product, params }: ProductClientProps) {
                         ))}
                       </ul>
                     </div>
-                  )}
+                  )} */}
                 </AccordionContent>
               </AccordionItem>
 

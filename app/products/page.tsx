@@ -106,7 +106,7 @@ export default async function ProductsPage() {
 
         <ProductGrid products={products} />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
           {products.map((product: any) => {
             const categorySlug =
               product.categorySlug || product.category?.slug || product.category
@@ -136,7 +136,7 @@ export default async function ProductsPage() {
               </div>
             )
           })}
-        </div>
+        </div> */}
       </main>
     </Suspense>
   )
